@@ -55,17 +55,16 @@ class User {
         }
 
 
-        if (isset($_POST["name"]) && isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirme_password"])){
+        if (isset($_POST["name"]) && isset($_POST["email"]) && isset($_POST["password"])){
             $name = $_POST["name"];
             $email = $_POST["email"];
             $password = $_POST["password"];
             $hash_password = sha1($password);
-            $confirme_password = $_POST["confirme_password"];
             
-            if ($_POST["password"] === $_POST["confirme_password"]){
+            if ($_POST["password"]){
                 
-                $sql = "INSERT INTO users (name, prenom, email, password)
-                VALUES (:name, :prenom, :email, :password)";
+                $sql = "INSERT INTO users (name, email, password)
+                VALUES (:name, :email, :password)";
                 
                 try {
                     $sth = $conn->prepare($sql);
@@ -74,7 +73,7 @@ class User {
                     $sth->bindParam(':password', $hash_password, PDO::PARAM_STR);
                 
                     $sth->execute();
-                    echo "Données insérées avec succès.";
+
                 } catch(PDOException $e) {
                     echo "Erreur : " . $e->getMessage();
                 }

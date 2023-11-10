@@ -1,5 +1,12 @@
 <?php
 
+
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
+
+
+if (!isset($_SESSION)) {session_start();}
 // Route dans votre backend (server.php par exemple)
 include '../class/Compte.php';
 

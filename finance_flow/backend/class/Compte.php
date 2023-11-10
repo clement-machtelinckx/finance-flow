@@ -5,7 +5,6 @@ class Compte {
     private $id;
     private $id_user;
     private $compte_name;
-
     private $creation_date;
     private $description;
     private $solde;
