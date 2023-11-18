@@ -108,16 +108,17 @@ class User {
         
                 if ($user) {
                     if ($hash_password === $user["password"]) {
+                        session_start();
                         $_SESSION["name"] = $user["name"];
                         $_SESSION['email'] = $user['email'];
                         $_SESSION["id"] = $user["id"];
-                        echo "connected";
-                        var_dump($_SESSION);
+                        echo json_encode(["message" => "connected"]);
+
                     } else {
-                        echo "incorrect password";
+                        echo json_encode(["error" => "incorrect password"]);
                     }
                 } else {
-                    echo "User not found";
+                    echo json_encode(["error" => "User not found"]);
                 }
             }
         }
@@ -158,16 +159,16 @@ class User {
 
     public function getConnectedUser() {
         // Vérifiez si l'utilisateur est connecté dans la session
-        if (isset($_SESSION["name"])) {
+        if (isset($_SESSION["name"], $_SESSION["email"], $_SESSION["id"])) {
             return [
                 'name' => $_SESSION["name"],
-                'email' => $_SESSION["email"],  // Utilisez la clé correcte pour l'e-mail
+                'email' => $_SESSION["email"],
                 'id' => $_SESSION["id"],
             ];
         } else {
-
             return null;
         }
     }
+    
     
 }
