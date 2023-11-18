@@ -39,94 +39,89 @@ class User {
         $this->email = $email;
     }
 
-    public function inscripUser($name, $email, $password){
 
-        $servername = "localhost";
-        $username = "root";
-        $password = "Clement2203$";
-        $dbname = "financeflow";
-
-        try {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8", $username, $password);
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        } catch(PDOException $e) {
-            echo "Erreur de connexion : " . $e->getMessage();
-        }
-
-
-        if (isset($_POST["name"]) && isset($_POST["email"]) && isset($_POST["password"])){
-            $name = $_POST["name"];
-            $email = $_POST["email"];
-            $password = $_POST["password"];
-            $hash_password = sha1($password);
-            
-            if ($_POST["password"]){
-                
-                $sql = "INSERT INTO users (name, email, password)
-                VALUES (:name, :email, :password)";
-                
-                try {
-                    $sth = $conn->prepare($sql);
-                    $sth->bindParam(':name', $name, PDO::PARAM_STR);
-                    $sth->bindParam(':email', $email, PDO::PARAM_STR);
-                    $sth->bindParam(':password', $hash_password, PDO::PARAM_STR);
-                
-                    $sth->execute();
-
-                } catch(PDOException $e) {
-                    echo "Erreur : " . $e->getMessage();
+        public function inscripUser($data) {
+            $servername = "localhost";
+            $username = "root";
+            $password = "Clement2203$";
+            $dbname = "financeflow";
+    
+            try {
+                $conn = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8", $username, $password);
+                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch(PDOException $e) {
+                echo "Erreur de connexion : " . $e->getMessage();
+            }
+    
+            if (isset($data["name"]) && isset($data["email"]) && isset($data["password"])) {
+                $name = $data["name"];
+                $email = $data["email"];
+                $password = $data["password"];
+                $hash_password = sha1($password);
+    
+                if ($data["password"]) {
+                    $sql = "INSERT INTO users (name, email, password)
+                            VALUES (:name, :email, :password)";
+    
+                    try {
+                        $sth = $conn->prepare($sql);
+                        $sth->bindParam(':name', $name, PDO::PARAM_STR);
+                        $sth->bindParam(':email', $email, PDO::PARAM_STR);
+                        $sth->bindParam(':password', $hash_password, PDO::PARAM_STR);
+    
+                        $sth->execute();
+    
+                        echo "Inscription réussie!";
+                    } catch(PDOException $e) {
+                        echo "Erreur : " . $e->getMessage();
+                    }
                 }
             }
         }
+    
+    
 
-    }
-
-    public function connecUser($email, $password){
-
+        public function connecUser($data){
+            $servername = "localhost";
+            $username = "root";
+            $password = "Clement2203$";
+            $dbname = "financeflow";
         
-        $servername = "localhost";
-        $username = "root";
-        $password = "Clement2203$";
-        $dbname = "financeflow";
-
-        try {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8", $username, $password);
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        } catch(PDOException $e) {
-            echo "Erreur de connexion : " . $e->getMessage();
-        }
-
-        if (isset($_POST["email"]) && $_POST["password"]){
-            $email = $_POST["email"];
-            $password = $_POST["password"];
-            $hash_password = sha1($password);
-
-            $sql = "SELECT * FROM users WHERE email = :email";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-            $stmt->execute();
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($user) {
-                if ($hash_password === $user["password"]){
-                    $_SESSION["name"] = $user["name"];
-                    $_SESSION['username'] = $user['email'];
-                    $_SESSION["id"] = $user["id"];
-                    //header("location: profil.php");
-                    echo "connected";
-                    var_dump($_SESSION);
-                }
-                else{
-                    echo "incorect password";
+            try {
+                $conn = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8", $username, $password);
+                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        
+            } catch(PDOException $e) {
+                echo "Erreur de connexion : " . $e->getMessage();
+            }
+        
+            if (isset($data["email"]) && isset($data["password"])) {
+                $email = $data["email"];
+                $password = $data["password"];
+                $hash_password = sha1($password);
+        
+                $sql = "SELECT * FROM users WHERE email = :email";
+                $stmt = $conn->prepare($sql);
+                $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+                $stmt->execute();
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+                if ($user) {
+                    if ($hash_password === $user["password"]) {
+                        $_SESSION["name"] = $user["name"];
+                        $_SESSION['email'] = $user['email'];
+                        $_SESSION["id"] = $user["id"];
+                        echo "connected";
+                        var_dump($_SESSION);
+                    } else {
+                        echo "incorrect password";
+                    }
+                } else {
+                    echo "User not found";
                 }
             }
-            else{
-                echo "User not found";
-            }
         }
-    }
+        
 
     public function getUserInfos($email){
 
@@ -159,4 +154,20 @@ class User {
 
         }
     }
+
+
+    public function getConnectedUser() {
+        // Vérifiez si l'utilisateur est connecté dans la session
+        if (isset($_SESSION["name"])) {
+            return [
+                'name' => $_SESSION["name"],
+                'email' => $_SESSION["email"],  // Utilisez la clé correcte pour l'e-mail
+                'id' => $_SESSION["id"],
+            ];
+        } else {
+
+            return null;
+        }
+    }
+    
 }
