@@ -13,10 +13,12 @@ const DisplayUser = () => {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
           },
+          credentials: 'include', // Assurez-vous que cette option est définie
         });
   
         if (response.ok) {
           const userData = await response.json();
+          console.log('userData:', userData);
           // Mettre à jour l'état uniquement si un utilisateur est connecté
           if (userData) {
             setUser(userData);

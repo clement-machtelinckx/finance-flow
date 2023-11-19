@@ -4,6 +4,7 @@ import CreateCompteForm from './composant/CreaCompte';
 import DisplayUser from './composant/DisplayUser';
 import InscriptionForm from './composant/InscriptionUser';
 import ConnexionUser from './composant/ConnexionUser';
+import BtnDeco from './composant/BtnDeco';
 
 export default function MyApp() {
   const [currentPage, setCurrentPage] = useState('connexion'); // 'inscription' or 'connexion'
@@ -27,10 +28,10 @@ export default function MyApp() {
       <Header />
       {currentPage === 'inscription' && <InscriptionForm />}
       {currentPage === 'connexion' && <ConnexionUser />}
-
+      <DisplayUser />
       <button onClick={() => handlePageChange('inscription')}>Inscription</button>
       <button onClick={() => handlePageChange('connexion')}>Connexion</button>
-
+      <BtnDeco />
     </div>
   );
 }

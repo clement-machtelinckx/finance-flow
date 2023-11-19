@@ -1,3 +1,5 @@
+
+
 import React, { useState } from 'react';
 
 const ConnexionUser = () => {
@@ -17,40 +19,46 @@ const ConnexionUser = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     setIsSubmitting(true);
-
+  
     // Create an object with the form data
     const formData = {
       email: email,
       password: password
     };
-
+  
     try {
       const response = await fetch('http://localhost/finance-flow/finance_flow/backend/routes/connexionUser.php', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        credentials: 'include',
+        body: JSON.stringify(formData),
       });
-
+  
       if (response.ok) {
         const data = await response.json();
         // Handle the success response from the server
         setSuccessMessage(data.message);
+        setError(null); // Clear any previous error
       } else {
         // Handle the error response from the server
         const errorData = await response.json();
-        setError(errorData.message);
+        setError(errorData.error); // Use the correct key for the error message
+        setSuccessMessage(null); // Clear any previous success message
       }
     } catch (error) {
       // Handle any fetch errors
       setError('An error occurred while processing your request.');
+      setSuccessMessage(null); // Clear any previous success message
     } finally {
       setIsSubmitting(false);
     }
   };
+  
+  
 
   return (
     <div>

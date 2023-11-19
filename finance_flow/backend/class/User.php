@@ -113,7 +113,7 @@ class User {
                         $_SESSION['email'] = $user['email'];
                         $_SESSION["id"] = $user["id"];
                         echo json_encode(["message" => "connected"]);
-
+                        var_dump($_SESSION);
                     } else {
                         echo json_encode(["error" => "incorrect password"]);
                     }
