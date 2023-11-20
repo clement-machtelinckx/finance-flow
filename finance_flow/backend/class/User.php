@@ -108,12 +108,16 @@ class User {
         
                 if ($user) {
                     if ($hash_password === $user["password"]) {
-                        session_start();
                         $_SESSION["name"] = $user["name"];
                         $_SESSION['email'] = $user['email'];
                         $_SESSION["id"] = $user["id"];
-                        echo json_encode(["message" => "connected"]);
-                        var_dump($_SESSION);
+                        echo json_encode([
+                            "name" => $_SESSION["name"],
+                            "email" => $_SESSION["email"],
+                            "message" => "connected"
+                        ]);
+                        
+
                     } else {
                         echo json_encode(["error" => "incorrect password"]);
                     }

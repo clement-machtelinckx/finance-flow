@@ -32,6 +32,11 @@ const DisplayUser = () => {
     };
   
     fetchConnectedUser();
+        // Configurer l'intervalle de rafraîchissement toutes les minutes (60000 millisecondes)
+        const intervalId = setInterval(fetchConnectedUser, 60000);
+
+        // Nettoyer l'intervalle lorsque le composant est démonté
+        return () => clearInterval(intervalId);
   }, []); // Les crochets vides signifient que ce useEffect ne s'exécutera qu'une seule fois, après le montage initial du composant.
   
 
