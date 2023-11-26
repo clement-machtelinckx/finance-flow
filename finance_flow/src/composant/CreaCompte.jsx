@@ -9,9 +9,10 @@ const CreateCompteForm = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost/finance-flow/finance_flow/backend/routes/showUsers.php', {
+      const response = await fetch('http://localhost/finance-flow/finance_flow/backend/routes/creaCompteRoute.php', {
         method: 'POST',
         headers: {
+          'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({

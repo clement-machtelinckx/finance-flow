@@ -29,6 +29,7 @@ export default function MyApp() {
       {currentPage === 'inscription' && <InscriptionForm />}
       {currentPage === 'connexion' && <ConnexionUser />}
       <DisplayUser />
+      <CreateCompteForm />
       <button onClick={() => handlePageChange('inscription')}>Inscription</button>
       <button onClick={() => handlePageChange('connexion')}>Connexion</button>
       <BtnDeco />
