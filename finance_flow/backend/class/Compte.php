@@ -69,42 +69,44 @@ class Compte {
         return $this;
     }
 
-    public function createCompte ($data, $id_user){
+    public function createCompte($data) {
         $servername = "localhost";
         $username = "root";
         $password = "Clement2203$";
         $dbname = "financeflow";
-        session_start();
+    
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8", $username, $password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            //  echo "Connexion réussie<br>";
-        } catch(PDOException $e) {
-            //  echo "Erreur de connexion : " . $e->getMessage();
+        } catch (PDOException $e) {
+            echo json_encode(["error" => "Erreur de connexion : " . $e->getMessage()]);
+            return; // Ajoutez un return pour sortir de la fonction si la connexion échoue
         }
-        if (isset($data["compte_name"]) && isset($data["solde"]) && isset($_SESSION["id"])){
-            $id_user = $_SESSION["id"];
+    
+        if (isset($data["compte_name"]) && isset($data["solde"]) && isset($data["id"])) {
+            $id_user = $data["id"];
             $compte_name = $data["compte_name"];
             $solde = $data["solde"];
-
-            $sql = "INSERT INTO compte (id_user, compte_name, solde)
-            VALUE (:id_user, :compte_name, :solde)";
-        
+            $description = "";
+    
+            $sql = "INSERT INTO compte (id_user, compte_name,  creation_date, description, solde) VALUES (:id_user, :compte_name, NOW(), :description, :solde)";
+    
             try {
                 $sth = $conn->prepare($sql);
                 $sth->bindParam(':id_user', $id_user, PDO::PARAM_INT);
                 $sth->bindParam(':compte_name', $compte_name, PDO::PARAM_STR);
-                $sth->bindParam(':solde', $solde, PDO::PARAM_INT);
             
+                $sth->bindParam(':description', $description, PDO::PARAM_STR);
+                $sth->bindParam(':solde', $solde, PDO::PARAM_INT);
+    
                 $sth->execute();
-                //  echo "Données insérées avec succès.";
-            } catch(PDOException $e) {
-                //  echo "Erreur : " . $e->getMessage();
+                echo json_encode(["result" => "success", "message" => "Données insérées avec succès."]);
+            } catch (PDOException $e) {
+                echo json_encode(["error" => "Erreur : " . $e->getMessage()]);
             }
+        } else {
+            echo json_encode(["error" => "Les données ne sont pas complètes"]);
         }
-
     }
-
 }
-
 ?>

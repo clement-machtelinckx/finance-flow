@@ -8,6 +8,10 @@ const CreateCompteForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Récupérer les données du localStorage
+    const userData = JSON.parse(localStorage.getItem('user'));
+    const userId = userData ? userData.id : null;
+
     try {
       const response = await fetch('http://localhost/finance-flow/finance_flow/backend/routes/creaCompteRoute.php', {
         method: 'POST',
@@ -18,6 +22,7 @@ const CreateCompteForm = () => {
         body: JSON.stringify({
           compte_name: compteName,
           solde: solde,
+          id: userId, // Ajouter l'ID de l'utilisateur au corps de la requête
         }),
       });
 
@@ -25,7 +30,8 @@ const CreateCompteForm = () => {
         const data = await response.json();
         console.log(data); // Vous pouvez traiter la réponse comme nécessaire
       } else {
-        console.error('Erreur de réponse du serveur :', response.status);
+        const errorData = await response.text();
+        console.error('Erreur de réponse du serveur :', response.status, errorData);
       }
     } catch (error) {
       console.error('Erreur lors de l\'envoi de la requête :', error);

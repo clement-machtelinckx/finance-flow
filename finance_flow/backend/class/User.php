@@ -114,6 +114,7 @@ class User {
                         echo json_encode([
                             "name" => $_SESSION["name"],
                             "email" => $_SESSION["email"],
+                            "id" => $_SESSION["id"],
                             "message" => "connected"
                         ]);
                         
