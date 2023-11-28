@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import CompteOperationForm from './CompteOperationForm';
 
 const ComptesList = () => {
   const [comptes, setComptes] = useState([]);
+  const [selectedCompte, setSelectedCompte] = useState(null);
 
   useEffect(() => {
     // Obtenir la chaîne JSON du local storage
@@ -25,8 +27,7 @@ const ComptesList = () => {
         .then(response => response.json())
         .then(data => {
           // Filtrer les comptes pour n'inclure que ceux de l'utilisateur connecté
-          const userComptes = data.filter(compte => compte.id_user === id_user);
-          setComptes(userComptes);
+          setComptes(data.filter(compte => compte.id_user === id_user));
         })
         .catch(error => {
           console.error('Une erreur s\'est produite lors de la récupération des comptes :', error);
@@ -36,16 +37,75 @@ const ComptesList = () => {
     }
   }, []);
 
+  const handleCompteClick = (compte) => {
+    // Mettez à jour le compte sélectionné
+    setSelectedCompte(compte);
+  };
+
+  const handleOperationSubmit = (montant, operationType) => {
+    if (selectedCompte) {
+      // Préparez les données à envoyer
+      const data = {
+        id: selectedCompte.id,
+        montant,
+        operationType,
+      };
+  
+      // Effectuez la requête POST avec fetch
+      fetch('http://localhost/finance-flow/finance_flow/backend/routes/operationCompte.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // Assurez-vous d'ajouter tout en-tête supplémentaire nécessaire, par exemple, les informations d'authentification
+        },
+        body: JSON.stringify(data),
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`La requête a échoué avec le statut : ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(responseData => {
+          // Traitez la réponse du backend ici si nécessaire
+          console.log('Réponse du backend :', responseData);
+        })
+        .catch(error => {
+          console.error('Erreur lors de la requête POST :', error);
+        });
+    } else {
+      console.error('Aucun compte sélectionné');
+    }
+  };
+  
+  
+
   return (
     <div>
       <h2>Liste des comptes :</h2>
       <ul>
         {comptes.map(compte => (
-          <li key={compte.id}>
+          <li
+            key={compte.id}
+            onClick={() => handleCompteClick(compte)}
+            style={{ cursor: 'pointer', color: selectedCompte === compte ? 'blue' : 'black' }}
+          >
             <strong>Nom du compte :</strong> {compte.compte_name}, <strong>Solde :</strong> {compte.solde}
           </li>
         ))}
       </ul>
+
+      {selectedCompte && (
+        <div>
+          <h3>Compte sélectionné :</h3>
+          <p><strong>Nom du compte :</strong> {selectedCompte.compte_name}</p>
+          <p><strong>Solde :</strong> {selectedCompte.solde}</p>
+          <p><strong>Date de creation :</strong> {selectedCompte.creation_date}</p>
+          <CompteOperationForm onOperationSubmit={handleOperationSubmit} operationType="addition" />
+          <CompteOperationForm onOperationSubmit={handleOperationSubmit} operationType="soustraction" />
+          {/* Ajoutez d'autres détails du compte ici si nécessaire */}
+        </div>
+      )}
     </div>
   );
 };

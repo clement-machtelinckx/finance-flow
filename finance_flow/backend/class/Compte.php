@@ -136,5 +136,41 @@ class Compte {
         }
 
     }
+
+    public function operationBDD($id_compte, $montant, $operator) {
+        $servername = "localhost";
+        $username = "root";
+        $password = "Clement2203$";
+        $dbname = "financeflow";
+    
+        try {
+            $conn = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8", $username, $password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            echo json_encode(["error" => "Erreur de connexion : " . $e->getMessage()]);
+            return;
+        }
+    
+        try {
+            if (isset($id_compte) && isset($montant) && isset($operator)) {
+                $sql = "";
+                if ($operator == "addition") {
+                    $sql = "UPDATE compte SET solde = solde + :montant WHERE id = :id_compte";
+                } elseif ($operator == "soustraction") {
+                    $sql = "UPDATE compte SET solde = solde - :montant WHERE id = :id_compte";
+                }
+    
+                $stmt = $conn->prepare($sql);
+                $stmt->bindParam(':montant', $montant, PDO::PARAM_INT);
+                $stmt->bindParam(':id_compte', $id_compte, PDO::PARAM_INT);
+                $stmt->execute();
+    
+                echo json_encode(["result" => "success", "message" => "Données mises à jour avec succès."]);
+            }
+        } catch (PDOException $e) {
+            echo json_encode(["error" => "Erreur d'exécution de la requête : " . $e->getMessage()]);
+        }
+    }
+    
 }
 ?>
