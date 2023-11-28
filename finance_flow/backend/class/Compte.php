@@ -108,5 +108,33 @@ class Compte {
             echo json_encode(["error" => "Les données ne sont pas complètes"]);
         }
     }
+
+
+
+    public function showBDD($id_user){
+        $servername = "localhost";
+        $username = "root";
+        $password = "Clement2203$";
+        $dbname = "financeflow";
+    
+        try {
+            $conn = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8", $username, $password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            echo json_encode(["error" => "Erreur de connexion : " . $e->getMessage()]);
+            return; // Ajoutez un return pour sortir de la fonction si la connexion échoue
+        }
+
+        if(isset($id_user)){
+            
+        
+        $sql ="SELECT * FROM compte WHERE id_user = $id_user";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $compte = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($compte);
+        }
+
+    }
 }
 ?>
