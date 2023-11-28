@@ -150,25 +150,61 @@ class Compte {
             echo json_encode(["error" => "Erreur de connexion : " . $e->getMessage()]);
             return;
         }
-    
+        $compte = new Compte();
         try {
             if (isset($id_compte) && isset($montant) && isset($operator)) {
                 $sql = "";
                 if ($operator == "addition") {
                     $sql = "UPDATE compte SET solde = solde + :montant WHERE id = :id_compte";
+                    $compte->entreTransaction($id_compte, $montant, $operator);
                 } elseif ($operator == "soustraction") {
                     $sql = "UPDATE compte SET solde = solde - :montant WHERE id = :id_compte";
+                    $compte->entreTransaction($id_compte, $montant, $operator);
                 }
     
                 $stmt = $conn->prepare($sql);
                 $stmt->bindParam(':montant', $montant, PDO::PARAM_INT);
                 $stmt->bindParam(':id_compte', $id_compte, PDO::PARAM_INT);
                 $stmt->execute();
-    
+
+
+
+
                 echo json_encode(["result" => "success", "message" => "Données mises à jour avec succès."]);
             }
         } catch (PDOException $e) {
             echo json_encode(["error" => "Erreur d'exécution de la requête : " . $e->getMessage()]);
+        }
+    }
+
+    public function entreTransaction($id_compte, $montant, $operator){
+        $servername = "localhost";
+        $username = "root";
+        $password = "Clement2203$";
+        $dbname = "financeflow";
+    
+        try {
+            $conn = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8", $username, $password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            echo json_encode(["error" => "Erreur de connexion : " . $e->getMessage()]);
+            return;
+        }
+        try {
+            if(isset($id_compte) && isset($montant) && isset($operator)){
+                $id_cate = 1;
+                $sql = "INSERT INTO transaction (id_compte, montant, calculator, date, id_cate) VALUES (:id_compte, :montant, :calculator, NOW(), :id_cate)";
+                $stmt = $conn->prepare($sql);
+                $stmt->bindParam(':id_compte', $id_compte, PDO::PARAM_INT);
+                $stmt->bindParam(':montant', $montant, PDO::PARAM_INT);
+                $stmt->bindParam(':calculator', $operator, PDO::PARAM_STR);
+                $stmt->bindParam(':id_cate', $id_cate, PDO::PARAM_INT);
+                $stmt->execute();
+                //  echo json_encode(["result" => "success", "message" => "Transaction insérées avec succès."]);
+
+            }
+        } catch (PDOException $e) {
+            //  echo json_encode(["error" => "Erreur d'exécution de la requête : " . $e->getMessage()]);
         }
     }
     
