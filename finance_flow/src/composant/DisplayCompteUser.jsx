@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CompteOperationForm from './CompteOperationForm';
+import TransactionList from './HistoriqueTransaction';
 
 const ComptesList = () => {
   const [comptes, setComptes] = useState([]);
@@ -103,6 +104,7 @@ const ComptesList = () => {
           <p><strong>Date de creation :</strong> {selectedCompte.creation_date}</p>
           <CompteOperationForm onOperationSubmit={handleOperationSubmit} operationType="addition" />
           <CompteOperationForm onOperationSubmit={handleOperationSubmit} operationType="soustraction" />
+          <TransactionList id_compte={selectedCompte.id} />
           {/* Ajoutez d'autres détails du compte ici si nécessaire */}
         </div>
       )}
