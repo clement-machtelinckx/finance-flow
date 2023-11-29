@@ -69,11 +69,11 @@ const ConnexionUser = () => {
       <form onSubmit={handleSubmit}>
         <div>
           <label>Email:</label>
-          <input type="email" value={email} onChange={handleEmailChange} />
+          <input className='form' type="email" value={email} onChange={handleEmailChange} />
         </div>
         <div>
           <label>Password:</label>
-          <input type="password" value={password} onChange={handlePasswordChange} />
+          <input className='form' type="password" value={password} onChange={handlePasswordChange} />
         </div>
         <button className='button' type="submit" disabled={isSubmitting}>Submit</button>
       </form>

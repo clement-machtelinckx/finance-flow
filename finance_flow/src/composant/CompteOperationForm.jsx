@@ -26,6 +26,7 @@ const CompteOperationForm = ({ onOperationSubmit, operationType }) => {
       <label>
         Montant:
         <input
+          className='form'
           type="text"
           value={montant}
           onChange={(e) => setMontant(e.target.value)}

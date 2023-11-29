@@ -42,12 +42,12 @@ const CreateCompteForm = () => {
     <form onSubmit={handleSubmit}>
       <label>
         Compte Name:
-        <input type="text" value={compteName} onChange={(e) => setCompteName(e.target.value)} />
+        <input className='form' type="text" value={compteName} onChange={(e) => setCompteName(e.target.value)} />
       </label>
       <br />
       <label>
         Solde:
-        <input type="text" value={solde} onChange={(e) => setSolde(e.target.value)} />
+        <input className='form' type="text" value={solde} onChange={(e) => setSolde(e.target.value)} />
       </label>
       <br />
       <button className='button' type="submit">Créer Compte</button>

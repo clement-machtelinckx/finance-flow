@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode($content, true);
 
     // Ajoutez une vérification pour vous assurer que $data existe avant de l'utiliser
-    if (isset($data)) {
+    if (isset($data['id']) && isset($data['compte_name']) && isset($data['solde']) && $data['compt_name'] !== "" && $data['solde'] !== "") {
         $id_user = $data["id"];
     
         $compte = new Compte();
