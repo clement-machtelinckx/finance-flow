@@ -26,7 +26,7 @@ const BtnDeco = () => {
     };
     
     return (
-        <button onClick={handleDeconnexion}>
+        <button className='button' onClick={handleDeconnexion}>
             Déconnexion
         </button>
     );

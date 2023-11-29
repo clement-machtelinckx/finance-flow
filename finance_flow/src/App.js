@@ -7,6 +7,8 @@ import ConnexionUser from './composant/ConnexionUser';
 import BtnDeco from './composant/BtnDeco';
 import ComptesList from './composant/DisplayCompteUser';
 
+import './style.css';
+
 export default function MyApp() {
   const [currentPage, setCurrentPage] = useState('connexion'); // 'inscription' or 'connexion'
   const [isLoggedIn, setIsLoggedIn] = useState(false);
