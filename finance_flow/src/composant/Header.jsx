@@ -1,9 +1,12 @@
 import React from "react";
 
+
+
 const Header = () => {
     return (
-        <header>
-            Finance Flow
+        <header className="header">
+            <h1>Finance Flow</h1>
+            
         </header>
     )
 };

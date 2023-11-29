@@ -75,7 +75,7 @@ const ConnexionUser = () => {
           <label>Password:</label>
           <input type="password" value={password} onChange={handlePasswordChange} />
         </div>
-        <button type="submit" disabled={isSubmitting}>Submit</button>
+        <button className='button' type="submit" disabled={isSubmitting}>Submit</button>
       </form>
     </div>
   );

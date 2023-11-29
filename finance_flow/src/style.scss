@@ -1,0 +1,62 @@
+$main-color: #264863;
+$second-color: #427D9D;
+$third-color: #9BBEC8;
+$B-G: #DDF2FD;
+$color-font: black;
+$font: 'Roboto-Regular', sans-serif;
+
+
+@font-face {
+    font-family: 'Roboto-Regular';
+    src: url('../asset/AO Mono/AOMono-Regular.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+// style.scss
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: $third-color;
+    font-family: $font;
+    display: flex; /* Utilisez Flexbox pour centrer verticalement et horizontalement */
+    align-items: center; /* Centre verticalement */
+    justify-content: center; /* Centre horizontalement */
+    min-height: 100vh; /* Garantit que le conteneur occupe au moins 100% de la hauteur de la vue */
+  }
+  
+  /* ... le reste de votre style ... */
+  
+
+.header {
+    background-color: $second-color;
+    height: 50px;
+
+}
+  
+  .root {
+
+    margin: 0 auto; // Centrer le contenu de l'application horizontalement
+  }
+  
+  .form {
+    background-color: $B-G; // Couleur de fond du formulaire
+    padding: 20px; // Espace intérieur du formulaire
+    margin: 20px; // Marge autour du formulaire
+  }
+  
+
+.button {
+    background-color: $main-color;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+
+

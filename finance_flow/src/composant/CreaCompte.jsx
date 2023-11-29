@@ -50,7 +50,7 @@ const CreateCompteForm = () => {
         <input type="text" value={solde} onChange={(e) => setSolde(e.target.value)} />
       </label>
       <br />
-      <button type="submit">Créer Compte</button>
+      <button className='button' type="submit">Créer Compte</button>
     </form>
   );
 };

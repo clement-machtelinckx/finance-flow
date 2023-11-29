@@ -31,7 +31,7 @@ const CompteOperationForm = ({ onOperationSubmit, operationType }) => {
           onChange={(e) => setMontant(e.target.value)}
         />
       </label>
-      <button type="submit">Effectuer l'opération</button>
+      <button className='button' type="submit">Effectuer l'opération</button>
     </form>
   );
 };

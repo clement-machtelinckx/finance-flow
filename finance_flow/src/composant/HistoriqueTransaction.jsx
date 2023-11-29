@@ -19,13 +19,24 @@ const TransactionList = ({ id_compte }) => {
   return (
     <div>
       <h2>Liste des transactions :</h2>
-      <ul>
-        {transactions.map(transaction => (
-          <li key={transaction.id}>
-            <strong>Montant :</strong> {transaction.montant}, <strong>Type :</strong> {transaction.calculator}, <strong>Date :</strong> {transaction.date}
-          </li>
-        ))}
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>Montant</th>
+            <th>Type</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {transactions.map(transaction => (
+            <tr key={transaction.id}>
+              <td>{transaction.montant}</td>
+              <td>{transaction.calculator}</td>
+              <td>{transaction.date}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
