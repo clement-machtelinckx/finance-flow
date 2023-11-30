@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CompteOperationForm from './CompteOperationForm';
 import TransactionList from './HistoriqueTransaction';
+import DeleteAccountButton from './DeleteCompte';
 
 const ComptesList = () => {
   const [comptes, setComptes] = useState([]);
@@ -78,6 +79,44 @@ const ComptesList = () => {
       console.error('Aucun compte sélectionné');
     }
   };
+
+  const handleDeleteAccount = () => {
+    if (selectedCompte) {
+      // Préparez les données à envoyer
+      const data = {
+        id: selectedCompte.id,
+      };
+  
+      // Effectuez la requête POST avec fetch
+      fetch('http://localhost/finance-flow/finance_flow/backend/routes/deleteCompte.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // Assurez-vous d'ajouter tout en-tête supplémentaire nécessaire, par exemple, les informations d'authentification
+        },
+        body: JSON.stringify(data), // Inclure l'ID du compte dans le corps de la requête JSON
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`La requête a échoué avec le statut : ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(responseData => {
+          // Traitez la réponse du backend ici si nécessaire
+          console.log('Réponse du backend :', responseData);
+          // Mettez à jour la liste des comptes après la suppression
+          setComptes(prevComptes => prevComptes.filter(compte => compte.id !== selectedCompte.id));
+          // Désélectionnez le compte après la suppression
+          setSelectedCompte(null);
+        })
+        .catch(error => {
+          console.error('Erreur lors de la requête DELETE :', error);
+        });
+    } else {
+      console.error('Aucun compte sélectionné');
+    }
+  };
   
   
 
@@ -104,6 +143,7 @@ const ComptesList = () => {
           <p><strong>Date de creation :</strong> {selectedCompte.creation_date}</p>
           <CompteOperationForm onOperationSubmit={handleOperationSubmit} operationType="addition" />
           <CompteOperationForm onOperationSubmit={handleOperationSubmit} operationType="soustraction" />
+          <DeleteAccountButton onDeleteClick={handleDeleteAccount} />
           <TransactionList id_compte={selectedCompte.id} />
           {/* Ajoutez d'autres détails du compte ici si nécessaire */}
         </div>

@@ -77,6 +77,27 @@ body {
       background-color: darken($main-color, 10%); // Changez la couleur au clic, vous pouvez ajuster le pourcentage
     }
   }
+
+  .supprime{
+    background-color: red;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  
+    &:hover {
+      background-color: lighten(red, 10%); // Changez la couleur au survol, vous pouvez ajuster le pourcentage
+    }
+  
+    &:active {
+      background-color: darken(red, 10%); // Changez la couleur au clic, vous pouvez ajuster le pourcentage
+    }
+  }
   
 
 

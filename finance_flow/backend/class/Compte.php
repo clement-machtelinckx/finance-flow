@@ -235,5 +235,33 @@ class Compte {
 
     }
 
+    public function deleteCompte($id_compte){
+        $servername = "localhost";
+        $username = "root";
+        $password = "Clement2203$";
+        $dbname = "financeflow";
+    
+        try {
+            $conn = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8", $username, $password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            echo json_encode(["error" => "Erreur de connexion : " . $e->getMessage()]);
+            return; // Ajoutez un return pour sortir de la fonction si la connexion échoue
+        }
+
+        if(isset($id_compte)){
+
+            $sql = "DELETE FROM compte WHERE id = :id_compte";
+
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id_compte', $id_compte, PDO::PARAM_INT);
+            $stmt->execute();
+            echo json_encode(["result" => "success", "message" => "Données supprimées avec succès."]);
+
+        }
+
+    }
+
+
 }
 ?>
