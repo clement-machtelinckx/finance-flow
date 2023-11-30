@@ -14,6 +14,13 @@ $font: 'Roboto-Regular', sans-serif;
   }
 // style.scss
 
+// .app {
+//   border: 5px solid $main-color;
+//   border-radius: 10px;
+//   max-height: 800px;
+//   max-width: 600px;
+//   margin: 0 auto;
+// }
 body {
     margin: 0;
     padding: 0;
@@ -29,20 +36,24 @@ body {
   
 
 .header {
+    display: flex;
+    align-items: center;
     background-color: $second-color;
     height: 50px;
+    border-radius: 5px;
 
 }
   
   .root {
-
+    
     margin: 0 auto; // Centrer le contenu de l'application horizontalement
   }
   
   .form {
     background-color: $B-G; // Couleur de fond du formulaire
-    padding: px; // Espace intérieur du formulaire
-    margin: 20px; // Marge autour du formulaire
+    padding: 5px; // Espace intérieur du formulaire
+    margin: 10px; // Marge autour du formulaire
+    border-radius: 10px; // Coins arrondis du formulaire
   }
   
 

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ConnexionUser = () => {
+  const navigate = useNavigate(); 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
@@ -51,6 +53,7 @@ const ConnexionUser = () => {
         const storedUserData = JSON.parse(localStorage.getItem('user'));
         console.log('Données enregistrées dans localStorage :', storedUserData);
 
+        navigate('/dashboard');
       } else {
         const errorData = await response.json();
         setError(errorData.error);

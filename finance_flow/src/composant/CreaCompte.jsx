@@ -39,6 +39,8 @@ const CreateCompteForm = () => {
   };
 
   return (
+    <div>
+    <h2>Créer un compte</h2>
     <form onSubmit={handleSubmit}>
       <label>
         Compte Name:
@@ -52,6 +54,7 @@ const CreateCompteForm = () => {
       <br />
       <button className='button' type="submit">Créer Compte</button>
     </form>
+    </div>
   );
 };
 

@@ -1,9 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const BtnDeco = () => {
+    const navigate = useNavigate();
+
     const handleDeconnexion = () => {
         console.log('Déconnexion appelée');
-
+        navigate('/connexion'); // <--- potentiel bug ici
         // Effacez toutes les données du local storage
         localStorage.clear();
 
@@ -17,7 +20,7 @@ const BtnDeco = () => {
             console.log(data);
 
             // Rediriger après la déconnexion
-            window.location.href = 'http://localhost/finance-flow/finance_flow/login.php';
+
         })
         .catch(error => {
             // Handle any errors that occurred during the fetch request
