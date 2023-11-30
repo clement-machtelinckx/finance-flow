@@ -70,7 +70,7 @@ useEffect(() => {
             <Link to='/connexion' className='button'>Connexion</Link>
           </div>
         )}
-        {isLoggedIn && <BtnDeco />}
+        {/* {isLoggedIn && <BtnDeco />} */}
       </div>
     </Router>
   );

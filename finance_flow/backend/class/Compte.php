@@ -156,28 +156,28 @@ class Compte {
                 $sql = "";
                 if ($operator == "addition") {
                     $sql = "UPDATE compte SET solde = solde + :montant WHERE id = :id_compte";
-                    $compte->entreTransaction($id_compte, $montant, $operator);
+
                 } elseif ($operator == "soustraction") {
                     $sql = "UPDATE compte SET solde = solde - :montant WHERE id = :id_compte";
-                    $compte->entreTransaction($id_compte, $montant, $operator);
+
                 }
     
                 $stmt = $conn->prepare($sql);
                 $stmt->bindParam(':montant', $montant, PDO::PARAM_INT);
                 $stmt->bindParam(':id_compte', $id_compte, PDO::PARAM_INT);
                 $stmt->execute();
+                $compte->entreTransaction($id_compte, $montant, $operator);
 
 
 
-
-                echo json_encode(["result" => "success", "message" => "Données mises à jour avec succès."]);
+                // echo json_encode(["result" => "success", "message" => "Données mises à jour avec succès."]);
             }
         } catch (PDOException $e) {
             echo json_encode(["error" => "Erreur d'exécution de la requête : " . $e->getMessage()]);
         }
     }
 
-    public function entreTransaction($id_compte, $montant, $operator){
+    public function entreTransaction($id_compte, $montant, $operator) {
         $servername = "localhost";
         $username = "root";
         $password = "Clement2203$";
@@ -190,23 +190,38 @@ class Compte {
             echo json_encode(["error" => "Erreur de connexion : " . $e->getMessage()]);
             return;
         }
+    
         try {
-            if(isset($id_compte) && isset($montant) && isset($operator)){
-                $id_cate = 1;
-                $sql = "INSERT INTO transaction (id_compte, montant, calculator, date, id_cate) VALUES (:id_compte, :montant, :calculator, NOW(), :id_cate)";
-                $stmt = $conn->prepare($sql);
-                $stmt->bindParam(':id_compte', $id_compte, PDO::PARAM_INT);
-                $stmt->bindParam(':montant', $montant, PDO::PARAM_INT);
-                $stmt->bindParam(':calculator', $operator, PDO::PARAM_STR);
-                $stmt->bindParam(':id_cate', $id_cate, PDO::PARAM_INT);
-                $stmt->execute();
-                //  echo json_encode(["result" => "success", "message" => "Transaction insérées avec succès."]);
+            $conn->beginTransaction();
+    
+            // Requête SELECT pour obtenir le solde actuel du compte
+            $sqlSelectSolde = "SELECT solde FROM compte WHERE id = :id_compte";
+            $stmtSelectSolde = $conn->prepare($sqlSelectSolde);
+            $stmtSelectSolde->bindParam(':id_compte', $id_compte, PDO::PARAM_INT);
+            $stmtSelectSolde->execute();
+            $soldeActuel = $stmtSelectSolde->fetchColumn();
+    
+            // Votre code d'INSERT
+            $id_cate = 1;
+            $sqlInsert = "INSERT INTO transaction (id_compte, montant, solde_time, calculator, date, id_cate) VALUES (:id_compte, :montant, :solde_time, :calculator, NOW(), :id_cate)";
+            $stmtInsert = $conn->prepare($sqlInsert);
+            $stmtInsert->bindParam(':id_compte', $id_compte, PDO::PARAM_INT);
+            $stmtInsert->bindParam(':montant', $montant, PDO::PARAM_INT);
+            $stmtInsert->bindParam(':solde_time', $soldeActuel, PDO::PARAM_STR);
+            $stmtInsert->bindParam(':calculator', $operator, PDO::PARAM_STR);
+            $stmtInsert->bindParam(':id_cate', $id_cate, PDO::PARAM_INT);
 
-            }
+            $stmtInsert->execute();
+    
+            $conn->commit();
+    
+            echo json_encode(["result" => "success", "message" => "Transaction insérée avec succès.", "solde_compte" => $soldeActuel]);
         } catch (PDOException $e) {
-            //  echo json_encode(["error" => "Erreur d'exécution de la requête : " . $e->getMessage()]);
+            $conn->rollBack();
+            echo json_encode(["error" => "Erreur d'exécution de la requête : " . $e->getMessage()]);
         }
     }
+    
     
     public function showTransaction($id_compte){
         $servername = "localhost";

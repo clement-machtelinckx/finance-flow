@@ -23,6 +23,7 @@ const TransactionList = ({ id_compte }) => {
         <thead>
           <tr>
             <th>Montant</th>
+            <th>Solde</th>
             <th>Type</th>
             <th>Date</th>
           </tr>
@@ -31,6 +32,7 @@ const TransactionList = ({ id_compte }) => {
           {transactions.map(transaction => (
             <tr key={transaction.id}>
               <td>{transaction.montant}</td>
+              <td>{transaction.solde_time}</td>
               <td>{transaction.calculator}</td>
               <td>{transaction.date}</td>
             </tr>

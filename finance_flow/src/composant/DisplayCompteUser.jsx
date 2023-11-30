@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CompteOperationForm from './CompteOperationForm';
 import TransactionList from './HistoriqueTransaction';
+import SoldeOverTimeChart from './SoldeOverTimeChart';
 import DeleteAccountButton from './DeleteCompte';
 
 const ComptesList = () => {
@@ -145,6 +146,9 @@ const ComptesList = () => {
           <CompteOperationForm onOperationSubmit={handleOperationSubmit} operationType="soustraction" />
           <DeleteAccountButton onDeleteClick={handleDeleteAccount} />
           <TransactionList id_compte={selectedCompte.id} />
+          
+
+          {/* <SoldeOverTimeChart id_compte={selectedCompte.id} /> */}
           {/* Ajoutez d'autres détails du compte ici si nécessaire */}
         </div>
       )}
