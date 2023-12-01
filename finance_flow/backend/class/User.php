@@ -162,18 +162,7 @@ class User {
     }
 
 
-    public function getConnectedUser() {
-        // Vérifiez si l'utilisateur est connecté dans la session
-        if (isset($_SESSION["name"], $_SESSION["email"], $_SESSION["id"])) {
-            return [
-                'name' => $_SESSION["name"],
-                'email' => $_SESSION["email"],
-                'id' => $_SESSION["id"],
-            ];
-        } else {
-            return null;
-        }
-    }
+
     
     
 }
