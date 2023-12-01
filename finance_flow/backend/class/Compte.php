@@ -277,6 +277,33 @@ class Compte {
 
     }
 
+    public function getGraphData($id_compte){
+        $servername = "localhost";
+        $username = "root";
+        $password = "Clement2203$";
+        $dbname = "financeflow";
+    
+        try {
+            $conn = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8", $username, $password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            echo json_encode(["error" => "Erreur de connexion : " . $e->getMessage()]);
+            return; // Ajoutez un return pour sortir de la fonction si la connexion échoue
+        }
+
+        if(isset($id_compte)){
+            
+        
+        $sql ="SELECT solde_time, date FROM transaction WHERE id_compte = $id_compte";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $transaction = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($transaction);
+        }
+
+    }
+
 
 }
 ?>
